@@ -4,9 +4,11 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useRouteError,
 } from "@remix-run/react";
 import "./tailwind.css";
-
+import { ChakraProvider, VStack } from "@chakra-ui/react";
+import Navbar from "./components/Navbar";
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -26,5 +28,29 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <ChakraProvider>
+      <Navbar />
+      <VStack mt={8}>
+        <Outlet />
+      </VStack>
+    </ChakraProvider>
+  );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+  console.error(error);
+  return (
+    <html>
+      <head>
+        <title>Oh no!</title>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <Scripts />
+      </body>
+    </html>
+  );
 }
